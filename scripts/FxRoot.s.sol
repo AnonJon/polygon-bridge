@@ -7,38 +7,29 @@ import "../contracts/FxERC20RootTunnel.sol";
 
 contract RootScript is Script {
     using stdJson for string;
+
     string root = vm.projectRoot();
     string path = string.concat(root, "/network.config.json");
     string json = vm.readFile(path);
     FxERC20RootTunnel rootTunnel;
     bytes transactionDetails = json.parseRaw(".testnet");
+
     struct TestNet {
-        Fxroot fxRoot;
-        CheckPointManager checkpointManager;
-        FxERC20 fxERC20;
+        address checkpointManager;
+        address childTunnel;
+        address fxChild;
+        address fxERC20;
+        address fxRoot;
     }
-    struct Fxroot {
-        address Address;
-    }
-    struct CheckPointManager {
-        address Address;
-    }
-    struct FxERC20 {
-        address Address;
-    }
-    
-    function setUp() public {
-    
-        
-    }
+
+    function setUp() public {}
 
     function run() public {
+        vm.broadcast();
         TestNet memory rawTxDetail = abi.decode(transactionDetails, (TestNet));
-        rootTunnel = new FxERC20RootTunnel(rawTxDetail.checkpointManager.Address, rawTxDetail.fxRoot.Address, rawTxDetail.fxERC20.Address);
+        rootTunnel = new FxERC20RootTunnel(rawTxDetail.checkpointManager, rawTxDetail.fxRoot, rawTxDetail.fxERC20);
         console2.log("address is ", address(rootTunnel));
-        rootTunnel.setFxChildTunnel(rawTxDetail.fxERC20.Address);
-
-        // vm.broadcast();
-        // string memory url = vm.rpcUrl("goerli");
+        rootTunnel.setFxChildTunnel(rawTxDetail.childTunnel);
+        console2.log("ERC20ChildTunnel set");
     }
 }

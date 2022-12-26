@@ -11,3 +11,4 @@ lib/
 # Dotenv file
 .env
 .envrc
+.vscode
