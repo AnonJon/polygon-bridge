@@ -1,6 +1,14 @@
 [profile.default]
-src = 'src'
+src = 'contracts'
 out = 'out'
 libs = ['lib']
+remappings = ['@fxportal=lib/contracts', '@openzeppelin=lib/openzeppelin-contracts']
+fs_permissions = [{ access = "read", path = "./"}]
+
+[rpc_endpoints]
+goerli = 'https://rpc.fantom.network'
+mumbai = 'https://rpc.testnet.fantom.network'
+
+
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

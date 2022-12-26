@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
-import "forge-std/console2.sol";
 
-import "forge-std/Test.sol";
+import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
-// import "../src/Counter.sol";
+import "../contracts/FxERC20ChildTunnel.sol";
 
-contract CounterTest is Test {
+contract ChildScript is Script {
     using stdJson for string;
+    FxERC20ChildTunnel childTunnel;
     address fxChild;
     bytes transactionDetails;
     struct Config {
@@ -19,12 +19,14 @@ contract CounterTest is Test {
         string memory path = string.concat(root, "/network.config.json");
         string memory json = vm.readFile(path);
         transactionDetails = json.parseRaw(".testnet.fxChild");
-
+        
     }
 
-    function test_file() public {
+    function run() public {
         Config memory rawTxDetail = abi.decode(transactionDetails, (Config));
-        console2.log(rawTxDetail.fxChild);
+        childTunnel = new FxERC20ChildTunnel(rawTxDetail.fxChild, address(this));
+        console2.log("address is ", address(childTunnel));
+
         // vm.broadcast();
         // string memory url = vm.rpcUrl("goerli");
     }
