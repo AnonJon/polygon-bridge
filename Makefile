@@ -1,7 +1,7 @@
 -include .env
 
 install: clean
-	forge install --no-git Openzeppelin/openzeppelin-contracts foundry-rs/forge-std fx-portal/contracts --no-commit
+	forge install Openzeppelin/openzeppelin-contracts foundry-rs/forge-std fx-portal/contracts --no-commit
 
 script-mumbai:
 	forge script scripts/FxChild.s.sol:ChildScript --rpc-url ${MUMBAI_RPC} --private-key ${PRIVATE_KEY} --broadcast --verify --etherscan-api-key ${POLYSCAN_KEY} -vvvv
