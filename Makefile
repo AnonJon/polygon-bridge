@@ -1,7 +1,7 @@
 -include .env
 
 install: clean
-	forge install Openzeppelin/openzeppelin-contracts foundry-rs/forge-std fx-portal/contracts --no-commit
+	forge install --no-git Openzeppelin/openzeppelin-contracts foundry-rs/forge-std fx-portal/contracts --no-commit
 
 script:
 	forge script scripts/Counter.s.sol --rpc-url ${RINKEBY_RPC_URL}  --private-key ${PRIVATE_KEY} --broadcast --verify --etherscan-api-key ${ETHERSCAN_KEY} -vvvv
