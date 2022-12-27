@@ -14,9 +14,10 @@ contract ChildScript is Script {
 
     struct TestNet {
         address checkpointManager;
-        address childTunnel;
         address fxChild;
         address fxERC20;
+        address childTunnel;
+        address erc20Goerli;
         address fxRoot;
     }
 
@@ -28,8 +29,10 @@ contract ChildScript is Script {
     }
 
     function run() public {
-        vm.broadcast();
+        vm.startBroadcast();
         TestNet memory rawTxDetail = abi.decode(transactionDetails, (TestNet));
+        console2.log("erc20 ", rawTxDetail.fxERC20);
+        console2.log("fxChild ", rawTxDetail.fxChild);
         childTunnel = new FxERC20ChildTunnel(rawTxDetail.fxChild, rawTxDetail.fxERC20);
         console2.log("address is ", address(childTunnel));
     }

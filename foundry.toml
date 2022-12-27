@@ -5,7 +5,6 @@ libs = ['lib']
 remappings = ['@fxportal=lib/contracts', '@openzeppelin=lib/openzeppelin-contracts']
 fs_permissions = [{ access = "read", path = "./"}]
 optimizer = true
-optimizer_runs = 2_000
 
 [rpc_endpoints]
 goerli = 'https://rpc.fantom.network'
