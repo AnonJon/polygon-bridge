@@ -1,12 +1,7 @@
 require("dotenv").config();
-const config = require("../config/network.config.json");
+const config = require("../../config/network.config.json");
 import { ethers } from "hardhat";
-import {deploy} from "../test/util";
-
-// Use your own deployed child tunnel addresses here instead!
-const fxERC20ChildTunnel = config.testnet.childTunnel.address;
-const fxERC721ChildTunnel = "0x96d26FCA4cB14e14CABc28eF8bc8Aba0E03702A8";
-const fxERC1155ChildTunnel = "0x24a16Db524d342968A11b9E1aD75b6D5eD002db7";
+import { deploy } from "../../test/utils/helpers";
 
 async function main() {
   let fxRoot, checkpointManager, fxERC20, fxERC721, fxERC1155;
@@ -29,7 +24,11 @@ async function main() {
     fxERC1155 = config.testnet.fxERC1155.address;
   }
 
-  const erc20 = await deploy("FxERC20RootTunnel",[checkpointManager,fxRoot,fxERC20]);
+  const erc20 = await deploy("FxERC20RootTunnel", [
+    checkpointManager,
+    fxRoot,
+    fxERC20,
+  ]);
   await erc20.deployed();
   console.log("ERC20RootTunnel deployed to:", erc20.address);
   console.log(
@@ -39,12 +38,6 @@ async function main() {
     fxRoot,
     fxERC20
   );
-
-  const setERC20Child = await erc20.setFxChildTunnel(fxERC20ChildTunnel);
-  console.log(setERC20Child);
-  await setERC20Child.wait();
-  console.log("ERC20ChildTunnel set");
-
 }
 
 main()

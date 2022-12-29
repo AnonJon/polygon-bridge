@@ -10,8 +10,9 @@ const POLYGON_MUMBAI_RPC_URL = process.env.POLYGON_MUMBAI_RPC_URL as string;
 const GANACHE_RPC_URL = process.env.GANACHE_RPC_URL as string;
 const LOCAL_RPC_URL = process.env.RPC_URL as string;
 const PRIVATE_KEY = (process.env.PRIVATE_KEY as string) || "0x";
-interface Config extends HardhatUserConfig {
-}
+const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY as string;
+const POLYGONSCAN_KEY = process.env.POLYGONSCAN_KEY as string;
+interface Config extends HardhatUserConfig {}
 
 const config: Config = {
   solidity: "0.8.17",
@@ -45,8 +46,11 @@ const config: Config = {
     // },
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API,
-  }
+    apiKey: {
+      polygonMumbai: POLYGONSCAN_KEY,
+      goerli: ETHERSCAN_KEY,
+    },
+  },
 };
 
 export default config;
