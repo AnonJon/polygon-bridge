@@ -1,4 +1,3 @@
-import { ethers } from "hardhat";
 import { deploy } from "../../test/utils/helpers";
 
 async function main() {

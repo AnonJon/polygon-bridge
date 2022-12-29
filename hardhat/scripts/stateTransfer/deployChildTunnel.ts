@@ -1,10 +1,10 @@
 require("dotenv").config();
-const config = require("../../config/network.config.json");
+import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
 import { deploy } from "../../test/utils/helpers";
 
 async function main() {
-  let fxChild;
+  let fxChild: string;
 
   const network = await ethers.provider.getNetwork();
 
@@ -14,6 +14,8 @@ async function main() {
   } else if (network.chainId === 80001) {
     // Mumbai Testnet
     fxChild = config.testnet.fxChild.address;
+  } else {
+    throw new Error("Invalid network");
   }
 
   const state = await deploy("FxStateChildTunnel", [fxChild]);

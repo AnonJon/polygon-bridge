@@ -3,6 +3,12 @@
 test-contracts: 
 	npx hardhat test --show-stack-traces
 
+run-deposit:
+	npx hardhat run --network ${NETWORK_GOERLI} scripts/erc20Transfer/deposit.ts
+
+run-withdraw:
+	npx hardhat run --network ${NETWORK_MUMBAI} scripts/erc20Transfer/withdraw.ts
+
 deploy-erc20:
 	npx hardhat run --network ${NETWORK_GOERLI} scripts/erc20Transfer/erc20.ts
 

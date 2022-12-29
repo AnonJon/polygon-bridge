@@ -1,10 +1,14 @@
 require("dotenv").config();
-const config = require("../../config/network.config.json");
+import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
 import { deploy } from "../../test/utils/helpers";
 
 async function main() {
-  let fxRoot, checkpointManager, fxERC20, fxERC721, fxERC1155;
+  let fxRoot: string,
+    checkpointManager: string,
+    fxERC20: string,
+    fxERC721: string,
+    fxERC1155: string;
 
   const network = await ethers.provider.getNetwork();
 
@@ -22,6 +26,8 @@ async function main() {
     fxERC20 = config.testnet.fxERC20.address;
     fxERC721 = config.testnet.fxERC721.address;
     fxERC1155 = config.testnet.fxERC1155.address;
+  } else {
+    throw new Error("Invalid network");
   }
 
   const erc20 = await deploy("FxERC20RootTunnel", [

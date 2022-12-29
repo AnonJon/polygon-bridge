@@ -31,7 +31,8 @@ describe("Tunnels", function () {
       owner.address,
       fxerc20.address,
     ]);
-    await childTunnel.setFxRootTunnel(rootTunnel.address);
+    const tx = await childTunnel.setFxRootTunnel(rootTunnel.address);
+    console.log("tx", tx);
   });
 
   describe("process message from root", function () {

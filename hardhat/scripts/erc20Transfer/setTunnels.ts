@@ -1,7 +1,6 @@
 require("dotenv").config();
-const config = require("../../config/network.config.json");
+import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
-import { deploy } from "../../test/utils/helpers";
 import FxStateChildTunnel from "../../artifacts/contracts/stateTransfer/StateChildTunnel.sol/FxStateChildTunnel.json";
 import FxStateRootTunnel from "../../artifacts/contracts/stateTransfer/StateRootTunnel.sol/FxStateRootTunnel.json";
 

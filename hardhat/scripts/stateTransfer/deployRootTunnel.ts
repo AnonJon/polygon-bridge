@@ -1,10 +1,10 @@
 require("dotenv").config();
-const config = require("../../config/network.config.json");
+import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
 import { deploy } from "../../test/utils/helpers";
 
 async function main() {
-  let fxRoot, checkpointManager;
+  let fxRoot: string, checkpointManager: string;
 
   const network = await ethers.provider.getNetwork();
 
@@ -16,6 +16,8 @@ async function main() {
     // Goerli Testnet
     fxRoot = config.testnet.fxRoot.address;
     checkpointManager = config.testnet.checkpointManager.address;
+  } else {
+    throw new Error("Invalid network");
   }
 
   const state = await deploy("FxStateRootTunnel", [checkpointManager, fxRoot]);

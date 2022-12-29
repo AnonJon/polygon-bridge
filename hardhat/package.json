@@ -7,6 +7,7 @@
   "dependencies": {
     "@maticnetwork/fx-portal": "github:fx-portal/contracts",
     "@maticnetwork/maticjs": "^3.5.0",
+    "@maticnetwork/maticjs-ethers": "^1.0.3",
     "@openzeppelin/contracts": "^4.8.0",
     "dotenv": "^16.0.3"
   }
