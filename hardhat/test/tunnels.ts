@@ -21,18 +21,17 @@ describe("Tunnels", function () {
     fxRoot = "0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA";
     checkpointManager = "0x2890bA17EfE978480615e330ecB65333b880928e";
     fxerc20 = await deploy("FxERC20");
-    rootTunnel = await deploy("FxERC20RootTunnel", [
+    rootTunnel = await deploy("XERC20RootTunnel", [
       checkpointManager,
       owner.address,
       fxerc20.address,
     ]);
 
-    childTunnel = await deploy("FxERC20ChildTunnel", [
+    childTunnel = await deploy("XERC20ChildTunnel", [
       owner.address,
       fxerc20.address,
     ]);
     const tx = await childTunnel.setFxRootTunnel(rootTunnel.address);
-    console.log("tx", tx);
   });
 
   describe("process message from root", function () {

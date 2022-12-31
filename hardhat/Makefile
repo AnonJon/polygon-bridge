@@ -3,6 +3,9 @@
 test-contracts: 
 	npx hardhat test --show-stack-traces
 
+generate-proof:
+	npx hardhat run --network ${NETWORK_MUMBAI} scripts/erc20Transfer/generateProof.ts
+
 run-deposit:
 	npx hardhat run --network ${NETWORK_GOERLI} scripts/erc20Transfer/deposit.ts
 

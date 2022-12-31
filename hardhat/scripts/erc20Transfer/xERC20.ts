@@ -4,7 +4,7 @@ async function main() {
   const template = await deploy("FxERC20");
   await template.deployed();
 
-  console.log(`ERC20 deployed to ${template.address}`);
+  console.log(`xERC20 deployed to ${template.address}`);
 }
 
 main().catch((error) => {

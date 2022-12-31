@@ -20,7 +20,7 @@ async function main() {
     throw new Error("Invalid network");
   }
 
-  const state = await deploy("FxStateRootTunnel", [checkpointManager, fxRoot]);
+  const state = await deploy("XStateRootTunnel", [checkpointManager, fxRoot]);
   await state.deployed();
   console.log("StateRootTunnel deployed to:", state.address);
   console.log(

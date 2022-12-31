@@ -15,7 +15,19 @@ const POLYGONSCAN_KEY = process.env.POLYGONSCAN_KEY as string;
 interface Config extends HardhatUserConfig {}
 
 const config: Config = {
-  solidity: "0.8.17",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.17",
+      },
+      {
+        version: "0.8.15",
+      },
+      {
+        version: "0.8.0",
+      },
+    ],
+  },
   defaultNetwork: "hardhat",
   networks: {
     // ganache: {

@@ -18,7 +18,7 @@ async function main() {
     throw new Error("Invalid network");
   }
 
-  const state = await deploy("FxStateChildTunnel", [fxChild]);
+  const state = await deploy("XStateChildTunnel", [fxChild]);
   await state.deployed();
 
   console.log("StateChildTunnel deployed to:", state.address);

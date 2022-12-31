@@ -1,6 +1,6 @@
 require("dotenv").config();
-import FxERC20ChildTunnel from "../../artifacts/contracts/FxERC20ChildTunnel.sol/FxERC20ChildTunnel.json";
-import FxERC20RootTunnel from "../../artifacts/contracts/FxERC20RootTunnel.sol/FxERC20RootTunnel.json";
+import XERC20ChildTunnel from "../../artifacts/contracts/XERC20ChildTunnel.sol/XERC20ChildTunnel.json";
+import XERC20RootTunnel from "../../artifacts/contracts/XERC20RootTunnel.sol/XERC20RootTunnel.json";
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import config from "../../config/network.config.json";
@@ -33,12 +33,12 @@ const main = async () => {
     // Mumbai Testnet
     childTunnel = new ethers.Contract(
       ERC20ChildTunnelMumbai,
-      FxERC20ChildTunnel.abi,
+      XERC20ChildTunnel.abi,
       signer
     );
     rootTunnel = new ethers.Contract(
       ERC20RootTunnelGoerli,
-      FxERC20RootTunnel.abi,
+      XERC20RootTunnel.abi,
       signer2
     );
     token = config.testnet.childToken.address;
@@ -47,12 +47,12 @@ const main = async () => {
     // Polygon Mainnet
     childTunnel = new ethers.Contract(
       ERC20ChildTunnel,
-      FxERC20ChildTunnel.abi,
+      XERC20ChildTunnel.abi,
       signer
     );
     rootTunnel = new ethers.Contract(
       ERC20RootTunnel,
-      FxERC20RootTunnel.abi,
+      XERC20RootTunnel.abi,
       signer2
     );
     token = config.mainnet.childToken.address;

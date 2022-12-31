@@ -6,7 +6,7 @@ import {FxBaseChildTunnel} from "@maticnetwork/fx-portal/contracts/tunnel/FxBase
 /**
  * @title FxStateChildTunnel
  */
-contract FxStateChildTunnel is FxBaseChildTunnel {
+contract XStateChildTunnel is FxBaseChildTunnel {
     uint256 public latestStateId;
     address public latestRootMessageSender;
     bytes public latestData;

@@ -1,4 +1,4 @@
-import FxERC20RootTunnel from "../../artifacts/contracts/FxERC20RootTunnel.sol/FxERC20RootTunnel.json";
+import XERC20RootTunnel from "../../artifacts/contracts/XERC20RootTunnel.sol/XERC20RootTunnel.json";
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import config from "../../config/network.config.json";
@@ -25,7 +25,7 @@ const main = async () => {
     token = config.testnet.rootToken.address;
     rootTunnel = new ethers.Contract(
       ERC20RootTunnelGoerli,
-      FxERC20RootTunnel.abi,
+      XERC20RootTunnel.abi,
       signer
     );
     client = await createClient("testnet", "mumbai");
@@ -34,7 +34,7 @@ const main = async () => {
     token = config.mainnet.rootToken.address;
     rootTunnel = new ethers.Contract(
       ERC20RootTunnel,
-      FxERC20RootTunnel.abi,
+      XERC20RootTunnel.abi,
       signer
     );
     client = await createClient("mainnet", "v1");

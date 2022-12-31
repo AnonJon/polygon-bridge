@@ -27,7 +27,7 @@ async function main() {
     throw new Error("Invalid network");
   }
 
-  const erc20 = await deploy("FxERC20ChildTunnel", [fxChild, fxerc20]);
+  const erc20 = await deploy("XERC20ChildTunnel", [fxChild, fxerc20]);
   await erc20.deployed();
 
   console.log("ERC20ChildTunnel deployed to:", erc20.address);

@@ -30,7 +30,7 @@ async function main() {
     throw new Error("Invalid network");
   }
 
-  const erc20 = await deploy("FxERC20RootTunnel", [
+  const erc20 = await deploy("XERC20RootTunnel", [
     checkpointManager,
     fxRoot,
     fxERC20,
