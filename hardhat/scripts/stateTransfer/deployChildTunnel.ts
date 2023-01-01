@@ -1,7 +1,7 @@
 require("dotenv").config();
 import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
-import { deploy } from "../../test/utils/helpers";
+import { deploy, verify } from "../../test/utils/helpers";
 
 async function main() {
   let fxChild: string;
@@ -22,7 +22,7 @@ async function main() {
   await state.deployed();
 
   console.log("StateChildTunnel deployed to:", state.address);
-  console.log("npx hardhat verify --network mumbai", state.address, fxChild);
+  await verify(network.name, state.address, fxChild);
 }
 
 main()

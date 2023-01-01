@@ -7,8 +7,6 @@ import { POSClient } from "@maticnetwork/maticjs";
 require("dotenv").config();
 
 const pk = process.env.PRIVATE_KEY as string;
-const ERC20RootTunnelGoerli = config.testnet.rootTunnel.address;
-const ERC20RootTunnel = config.mainnet.rootTunnel.address;
 const amount = ethers.utils.parseEther("10"); // the amount you want to withdraw
 const user: string = config.testnet.localUser.address; // address recieving tokens on the other side
 const main = async () => {
@@ -19,21 +17,24 @@ const main = async () => {
   let client: POSClient;
   let check: boolean = false;
   let rootTunnel: Contract;
+  let rootTunnelAddress: string;
 
   if (network.chainId === 5) {
     // Goerli Testnet
-    token = config.testnet.rootToken.address;
+    rootTunnelAddress = config.testnet.rootTunnel.address;
+    token = config.testnet.ERC677.address;
     rootTunnel = new ethers.Contract(
-      ERC20RootTunnelGoerli,
+      rootTunnelAddress,
       XERC20RootTunnel.abi,
       signer
     );
     client = await createClient("testnet", "mumbai");
   } else if (network.chainId === 1) {
     // Ethereum Mainnet
-    token = config.mainnet.rootToken.address;
+    rootTunnelAddress = config.mainnet.rootTunnel.address;
+    token = config.mainnet.ERC677.address;
     rootTunnel = new ethers.Contract(
-      ERC20RootTunnel,
+      rootTunnelAddress,
       XERC20RootTunnel.abi,
       signer
     );
