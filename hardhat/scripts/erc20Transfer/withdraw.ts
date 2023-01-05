@@ -1,6 +1,6 @@
 require("dotenv").config();
-import FxERC20ChildTunnel from "../../artifacts/contracts/FxERC20ChildTunnel.sol/FxERC20ChildTunnel.json";
-import FxERC20RootTunnel from "../../artifacts/contracts/FxERC20RootTunnel.sol/FxERC20RootTunnel.json";
+import XERC20ChildTunnel from "../../artifacts/contracts/XERC20ChildTunnel.sol/XERC20ChildTunnel.json";
+import XERC20RootTunnel from "../../artifacts/contracts/XERC20RootTunnel.sol/XERC20RootTunnel.json";
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import config from "../../config/network.config.json";
@@ -10,10 +10,6 @@ import { POSClient } from "@maticnetwork/maticjs";
 const pk = process.env.PRIVATE_KEY as string;
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL as string;
 const rootProvider = new ethers.providers.JsonRpcProvider(GOERLI_RPC_URL);
-const ERC20ChildTunnelMumbai = config.testnet.childTunnel.address;
-const ERC20ChildTunnel = config.mainnet.childTunnel.address;
-const ERC20RootTunnelGoerli = config.testnet.rootTunnel.address;
-const ERC20RootTunnel = config.mainnet.rootTunnel.address;
 
 const main = async () => {
   const signer = new ethers.Wallet(pk, ethers.provider);
@@ -28,31 +24,37 @@ const main = async () => {
     check: boolean = false,
     rootTunnel: Contract,
     childTunnel: Contract,
-    token: string;
+    token: string,
+    rootTunnelAddress: string,
+    childTunnelAddress: string;
   if (network.chainId === 80001) {
     // Mumbai Testnet
+    rootTunnelAddress = config.testnet.rootTunnel.address;
+    childTunnelAddress = config.testnet.childTunnel.address;
     childTunnel = new ethers.Contract(
-      ERC20ChildTunnelMumbai,
-      FxERC20ChildTunnel.abi,
+      childTunnelAddress,
+      XERC20ChildTunnel.abi,
       signer
     );
     rootTunnel = new ethers.Contract(
-      ERC20RootTunnelGoerli,
-      FxERC20RootTunnel.abi,
+      rootTunnelAddress,
+      XERC20RootTunnel.abi,
       signer2
     );
     token = config.testnet.childToken.address;
     client = await createClient("testnet", "mumbai");
   } else if (network.chainId === 137) {
     // Polygon Mainnet
+    rootTunnelAddress = config.mainnet.rootTunnel.address;
+    childTunnelAddress = config.mainnet.childTunnel.address;
     childTunnel = new ethers.Contract(
-      ERC20ChildTunnel,
-      FxERC20ChildTunnel.abi,
+      childTunnelAddress,
+      XERC20ChildTunnel.abi,
       signer
     );
     rootTunnel = new ethers.Contract(
-      ERC20RootTunnel,
-      FxERC20RootTunnel.abi,
+      rootTunnelAddress,
+      XERC20RootTunnel.abi,
       signer2
     );
     token = config.mainnet.childToken.address;

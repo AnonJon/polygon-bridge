@@ -1,7 +1,7 @@
 require("dotenv").config();
 import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
-import { deploy } from "../../test/utils/helpers";
+import { deploy, verify } from "../../test/utils/helpers";
 
 async function main() {
   let fxRoot: string, checkpointManager: string;
@@ -20,15 +20,10 @@ async function main() {
     throw new Error("Invalid network");
   }
 
-  const state = await deploy("FxStateRootTunnel", [checkpointManager, fxRoot]);
+  const state = await deploy("XStateRootTunnel", [checkpointManager, fxRoot]);
   await state.deployed();
   console.log("StateRootTunnel deployed to:", state.address);
-  console.log(
-    "npx hardhat verify --network goerli",
-    state.address,
-    checkpointManager,
-    fxRoot
-  );
+  await verify(network.name, state.address, checkpointManager, fxRoot);
 }
 
 main()

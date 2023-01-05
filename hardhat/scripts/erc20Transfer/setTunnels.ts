@@ -1,11 +1,11 @@
 require("dotenv").config();
 import config from "../../config/network.config.json";
 import { ethers } from "hardhat";
-import FxStateChildTunnel from "../../artifacts/contracts/stateTransfer/StateChildTunnel.sol/FxStateChildTunnel.json";
-import FxStateRootTunnel from "../../artifacts/contracts/stateTransfer/StateRootTunnel.sol/FxStateRootTunnel.json";
+import XStateChildTunnel from "../../artifacts/contracts/stateTransfer/StateChildTunnel.sol/XStateChildTunnel.json";
+import XStateRootTunnel from "../../artifacts/contracts/stateTransfer/StateRootTunnel.sol/XStateRootTunnel.json";
 
-const fxERC20ChildTunnel = config.testnet.childTunnel.address;
-const fxERC20RootTunnel = config.testnet.rootTunnel.address;
+const xERC20ChildTunnel = config.testnet.childTunnel.address;
+const xERC20RootTunnel = config.testnet.rootTunnel.address;
 const pk = process.env.PRIVATE_KEY as string;
 
 async function main() {
@@ -16,22 +16,22 @@ async function main() {
   if (network.chainId === 80001) {
     // Mumbai Testnet
     const childTunnel = new ethers.Contract(
-      fxERC20ChildTunnel,
-      FxStateChildTunnel.abi,
+      xERC20ChildTunnel,
+      XStateChildTunnel.abi,
       signer
     );
-    const setERC20Child = await childTunnel.setFxRootTunnel(fxERC20RootTunnel);
+    const setERC20Child = await childTunnel.setFxRootTunnel(xERC20RootTunnel);
     console.log(setERC20Child);
     await setERC20Child.wait();
     console.log("ERC20ChildTunnel set");
   } else if (network.chainId === 5) {
     // Goerli Testnet
     const rootTunnel = new ethers.Contract(
-      fxERC20RootTunnel,
-      FxStateRootTunnel.abi,
+      xERC20RootTunnel,
+      XStateRootTunnel.abi,
       signer
     );
-    const setERC20Root = await rootTunnel.setFxChildTunnel(fxERC20ChildTunnel);
+    const setERC20Root = await rootTunnel.setFxChildTunnel(xERC20ChildTunnel);
     console.log(setERC20Root);
     await setERC20Root.wait();
     console.log("ERC20RootTunnel set");

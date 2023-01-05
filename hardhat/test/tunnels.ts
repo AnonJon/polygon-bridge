@@ -3,6 +3,7 @@ import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect, assert } from "chai";
 import { ethers, network } from "hardhat";
 import { deploy } from "./utils/helpers";
+import config from "../config/network.config.json";
 import { any } from "hardhat/internal/core/params/argumentTypes";
 
 describe("Tunnels", function () {
@@ -10,29 +11,28 @@ describe("Tunnels", function () {
     fxRoot: any,
     fxChild: any,
     childTunnel: any,
-    fxerc20: any,
+    xerc677: any,
     checkpointManager: any,
     rootTunnel: any;
 
   beforeEach(async () => {
     const accounts = await ethers.getSigners();
     owner = accounts[0];
-    fxChild = "0xCf73231F28B7331BBe3124B907840A94851f9f11";
-    fxRoot = "0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA";
-    checkpointManager = "0x2890bA17EfE978480615e330ecB65333b880928e";
-    fxerc20 = await deploy("FxERC20");
-    rootTunnel = await deploy("FxERC20RootTunnel", [
+    fxChild = config.testnet.fxChild.address;
+    fxRoot = config.testnet.fxRoot.address;
+    checkpointManager = config.testnet.checkpointManager.address;
+    xerc677 = await deploy("XERC677");
+    rootTunnel = await deploy("XERC20RootTunnel", [
       checkpointManager,
       owner.address,
-      fxerc20.address,
+      xerc677.address,
     ]);
 
-    childTunnel = await deploy("FxERC20ChildTunnel", [
+    childTunnel = await deploy("XERC20ChildTunnel", [
       owner.address,
-      fxerc20.address,
+      xerc677.address,
     ]);
     const tx = await childTunnel.setFxRootTunnel(rootTunnel.address);
-    console.log("tx", tx);
   });
 
   describe("process message from root", function () {

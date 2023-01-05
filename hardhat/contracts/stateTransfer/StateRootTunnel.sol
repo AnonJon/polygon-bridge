@@ -6,7 +6,7 @@ import {FxBaseRootTunnel} from "@maticnetwork/fx-portal/contracts/tunnel/FxBaseR
 /**
  * @title FxStateRootTunnel
  */
-contract FxStateRootTunnel is FxBaseRootTunnel {
+contract XStateRootTunnel is FxBaseRootTunnel {
     bytes public latestData;
 
     constructor(address _checkpointManager, address _fxRoot) FxBaseRootTunnel(_checkpointManager, _fxRoot) {}

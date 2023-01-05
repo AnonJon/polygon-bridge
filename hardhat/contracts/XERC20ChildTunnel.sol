@@ -7,9 +7,9 @@ import {IFxERC20} from "@maticnetwork/fx-portal/contracts/tokens/IFxERC20.sol";
 import "hardhat/console.sol";
 
 /**
- * @title FxERC20ChildTunnel
+ * @title XERC20ChildTunnel
  */
-contract FxERC20ChildTunnel is FxBaseChildTunnel, Create2 {
+contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
     bytes32 public constant DEPOSIT = keccak256("DEPOSIT");
     bytes32 public constant MAP_TOKEN = keccak256("MAP_TOKEN");
     string public constant SUFFIX_NAME = " (xERC20)";
@@ -44,7 +44,6 @@ contract FxERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         address sender,
         bytes memory data
     ) internal override validateSender(sender) {
-        // decode incoming data
         (bytes32 syncType, bytes memory syncData) = abi.decode(data, (bytes32, bytes));
 
         if (syncType == DEPOSIT) {
@@ -56,14 +55,11 @@ contract FxERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         }
     }
 
-    function _mapToken(bytes memory syncData) internal returns (address) {
+    function _mapToken(bytes memory syncData) internal {
         (address rootToken, string memory name, string memory symbol, uint8 decimals) =
             abi.decode(syncData, (address, string, string, uint8));
 
-        // get root to child token
         address childToken = rootToChildToken[rootToken];
-
-        // check if it's already mapped
         require(childToken == address(0x0), "FxERC20ChildTunnel: ALREADY_MAPPED");
 
         // deploy new child token
@@ -81,9 +77,6 @@ contract FxERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         // map the token
         rootToChildToken[rootToken] = childToken;
         emit TokenMapped(rootToken, childToken);
-
-        // return new child token
-        return childToken;
     }
 
     function _syncDeposit(bytes memory syncData) internal {
