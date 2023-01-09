@@ -2,17 +2,17 @@
 pragma solidity ^0.8.0;
 
 import {FxBaseChildTunnel} from "@maticnetwork/fx-portal/contracts/tunnel/FxBaseChildTunnel.sol";
-import {Create2} from "@maticnetwork/fx-portal/contracts/lib/Create2.sol";
 import {IFxERC20} from "@maticnetwork/fx-portal/contracts/tokens/IFxERC20.sol";
+import {Clone} from "./lib/Clone.sol";
 import "hardhat/console.sol";
 
 /**
- * @title XERC20ChildTunnel
+ * @title XChildTunnel
  */
-contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
+contract XChildTunnel is FxBaseChildTunnel, Clone {
     bytes32 public constant DEPOSIT = keccak256("DEPOSIT");
     bytes32 public constant MAP_TOKEN = keccak256("MAP_TOKEN");
-    string public constant SUFFIX_NAME = " (xERC20)";
+    string public constant SUFFIX_NAME = " (xERC677)";
     string public constant PREFIX_SYMBOL = "x";
     address public immutable tokenTemplate;
     mapping(address => address) public rootToChildToken;
@@ -35,9 +35,6 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         _withdraw(childToken, receiver, amount);
     }
 
-    //
-    // Internal methods
-    //
     function _processMessageFromRoot(
         uint256,
         /* stateId */
@@ -51,7 +48,7 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         } else if (syncType == MAP_TOKEN) {
             _mapToken(syncData);
         } else {
-            revert("FxERC20ChildTunnel: INVALID_SYNC_TYPE");
+            revert("XChildTunnel: INVALID_SYNC_TYPE");
         }
     }
 
@@ -60,7 +57,7 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
             abi.decode(syncData, (address, string, string, uint8));
 
         address childToken = rootToChildToken[rootToken];
-        require(childToken == address(0x0), "FxERC20ChildTunnel: ALREADY_MAPPED");
+        require(childToken == address(0x0), "XChildTunnel: ALREADY_MAPPED");
 
         // deploy new child token
         bytes32 salt = keccak256(abi.encodePacked(rootToken));
@@ -74,7 +71,6 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
             decimals
         );
 
-        // map the token
         rootToChildToken[rootToken] = childToken;
         emit TokenMapped(rootToken, childToken);
     }
@@ -88,7 +84,6 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
         IFxERC20 childTokenContract = IFxERC20(childToken);
         childTokenContract.mint(to, amount);
 
-        // call onTokenTransfer() on `to` with limit and ignore error
         if (_isContract(to)) {
             uint256 txGas = 2000000;
             bool success = false;
@@ -101,7 +96,6 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
                 amount,
                 depositData
             );
-            // solium-disable-next-line security/no-inline-assembly
             assembly {
                 success := call(txGas, to, 0, add(data, 0x20), mload(data), 0, 0)
             }
@@ -111,23 +105,17 @@ contract XERC20ChildTunnel is FxBaseChildTunnel, Create2 {
 
     function _withdraw(address childToken, address receiver, uint256 amount) internal {
         IFxERC20 childTokenContract = IFxERC20(childToken);
-        // child token contract will have root token
         address rootToken = childTokenContract.connectedToken();
-
-        // validate root and child token mapping
         require(
             childToken != address(0x0) && rootToken != address(0x0) && childToken == rootToChildToken[rootToken],
             "FxERC20ChildTunnel: NO_MAPPED_TOKEN"
         );
 
-        // withdraw tokens
         childTokenContract.burn(msg.sender, amount);
 
-        // send message to root regarding token burn
         _sendMessageToRoot(abi.encode(rootToken, childToken, receiver, amount));
     }
 
-    // check if address is contract
     function _isContract(address _addr) private view returns (bool) {
         uint32 size;
         assembly {
